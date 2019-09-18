@@ -1056,7 +1056,8 @@ def bootstrap(args):
 
     logging.warning('bootstrap.py is deprecated!\n'
                     'Please migrate your job to podutils!\n'
-                    'https://github.com/kubernetes/test-infra/blob/master/prow/pod-utilities.md'
+                    'https://github.com/kubernetes/test-infra/blob/master/prow/pod-utilities.md\n'
+                    'test-infra oncall does not support jobs using bootstrap.py.'
                     )
 
     if len(sys.argv) > 1:
