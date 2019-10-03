@@ -2,6 +2,8 @@ module k8s.io/test-infra
 
 replace github.com/golang/lint => golang.org/x/lint v0.0.0-20190301231843-5614ed5bae6f
 
+replace github.com/GoogleCloudPlatform/testgrid => /usr/local/google/home/amerai/testgrid
+
 // Pin all k8s.io staging repositories to kubernetes-1.15.3.
 // When bumping Kubernetes dependencies, you should update each of these lines
 // to point to the same kubernetes-1.x.y release branch before running update-deps.sh.
@@ -14,11 +16,11 @@ replace (
 )
 
 require (
-	cloud.google.com/go v0.44.3
+	cloud.google.com/go v0.46.3
 	github.com/Azure/azure-sdk-for-go v21.1.0+incompatible
 	github.com/Azure/azure-storage-blob-go v0.0.0-20190123011202-457680cc0804
 	github.com/Azure/go-autorest v11.1.2+incompatible
-	github.com/GoogleCloudPlatform/testgrid v0.0.0-20190917190143-e27da30ca94e
+	github.com/GoogleCloudPlatform/testgrid v0.0.0-20191002194340-462e7a9505a0
 	github.com/NYTimes/gziphandler v0.0.0-20170623195520-56545f4a5d46
 	github.com/andygrunwald/go-gerrit v0.0.0-20190120104749-174420ebee6c
 	github.com/aws/aws-k8s-tester v0.0.0-20190114231546-b411acf57dfe
@@ -56,23 +58,21 @@ require (
 	github.com/peterbourgon/diskv v2.0.1+incompatible
 	github.com/pkg/errors v0.8.1
 	github.com/prometheus/client_golang v0.9.4
-	github.com/prometheus/procfs v0.0.5 // indirect
-	github.com/rogpeppe/go-internal v1.3.2 // indirect
 	github.com/satori/go.uuid v0.0.0-20160713180306-0aa62d5ddceb
 	github.com/shurcooL/githubv4 v0.0.0-20180925043049-51d7b505e2e9
 	github.com/sirupsen/logrus v1.4.2
 	github.com/spf13/cobra v0.0.5
-	github.com/spf13/pflag v1.0.3
+	github.com/spf13/pflag v1.0.5
 	github.com/spf13/viper v1.3.2
 	github.com/tektoncd/pipeline v0.1.1-0.20190327171839-7c43fbae2816
 	golang.org/x/crypto v0.0.0-20190611184440-5c40567a22f8
-	golang.org/x/lint v0.0.0-20190409202823-959b441ac422
-	golang.org/x/net v0.0.0-20190812203447-cdfb69ac37fc
+	golang.org/x/lint v0.0.0-20190930215403-16217165b5de
+	golang.org/x/net v0.0.0-20191002035440-2ec189313ef0
 	golang.org/x/oauth2 v0.0.0-20190604053449-0f29369cfe45
 	golang.org/x/sync v0.0.0-20190423024810-112230192c58
 	golang.org/x/time v0.0.0-20190308202827-9d24e82272b4
-	golang.org/x/tools v0.0.0-20190628153133-6cdbf07be9d0
-	google.golang.org/api v0.9.0
+	golang.org/x/tools v0.0.0-20191003162220-c56b4b191e2d
+	google.golang.org/api v0.10.0
 	gopkg.in/robfig/cron.v2 v2.0.0-20150107220207-be2e0b0deed5
 	gopkg.in/yaml.v3 v3.0.0-20190709130402-674ba3eaed22
 	k8s.io/api v0.0.0-20190918195907-bd6ac527cfd2
