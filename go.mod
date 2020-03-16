@@ -42,9 +42,10 @@ require (
 	github.com/go-openapi/spec v0.19.6
 	github.com/go-openapi/swag v0.19.7 // indirect
 	github.com/go-test/deep v1.0.4
+	github.com/gogo/protobuf v1.3.1
 	github.com/golang/glog v0.0.0-20160126235308-23def4e6c14b
 	github.com/golang/mock v1.3.1
-	github.com/golang/protobuf v1.3.4 // indirect
+	github.com/golang/protobuf v1.3.4
 	github.com/gomodule/redigo v1.7.0
 	github.com/google/go-cmp v0.4.0
 	github.com/google/go-github v17.0.0+incompatible

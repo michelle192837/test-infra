@@ -31,6 +31,7 @@ import (
 	tgCfgUtil "github.com/GoogleCloudPlatform/testgrid/config"
 	"github.com/GoogleCloudPlatform/testgrid/config/yamlcfg"
 	"github.com/GoogleCloudPlatform/testgrid/util/gcs"
+	"github.com/golang/protobuf/proto"
 	prowConfig "k8s.io/test-infra/prow/config"
 
 	"cloud.google.com/go/storage"
@@ -54,6 +55,7 @@ const pollingTime = time.Second
 type options struct {
 	creds              string
 	inputs             multiString
+	rawProto           multiString
 	oneshot            bool
 	output             string
 	printText          bool
@@ -74,6 +76,7 @@ func (o *options) gatherOptions(fs *flag.FlagSet, args []string) error {
 	fs.BoolVar(&o.worldReadable, "world-readable", false, "when uploading the proto to GCS, makes it world readable. Has no effect on writing to the local filesystem.")
 	fs.BoolVar(&o.writeYAML, "output-yaml", false, "Output to TestGrid YAML instead of config proto")
 	fs.Var(&o.inputs, "yaml", "comma-separated list of input YAML files or directories")
+	fs.Var(&o.rawProto, "raw-proto", "comma-separated list of raw config.proto binary files")
 	fs.StringVar(&o.prowConfig, "prow-config", "", "path to the prow config file. Required by --prow-job-config")
 	fs.StringVar(&o.prowJobConfig, "prow-job-config", "", "path to the prow job config. If specified, incorporates testgrid annotations on prowjobs. Requires --prow-config.")
 	fs.StringVar(&o.defaultYAML, "default", "", "path to default settings; required for proto outputs")
@@ -81,8 +84,8 @@ func (o *options) gatherOptions(fs *flag.FlagSet, args []string) error {
 		return err
 	}
 
-	if len(o.inputs) == 0 || o.inputs[0] == "" {
-		return errors.New("--yaml must include at least one file")
+	if len(o.inputs) == 0 || o.inputs[0] == "" || len(o.rawProto) == 0 {
+		return errors.New("at least one of [--yaml, --rawProto] must have at least one file specified")
 	}
 
 	if !o.printText && !o.validateConfigFile && o.output == "" {
@@ -206,11 +209,21 @@ func doOneshot(ctx context.Context, client *storage.Client, opt options, prowCon
 			return err
 		}
 		d = &val
-
 	}
 
 	if err := applyProwjobAnnotations(&c, d, prowConfigAgent); err != nil {
 		return fmt.Errorf("could not apply prowjob annotations: %v", err)
+	}
+
+	for _, rawProtoPath := range opt.rawProto {
+		rawC, err := tgCfgUtil.Read(rawProtoPath, ctx, client)
+		if err != nil {
+			return fmt.Errorf("could not read supplied raw proto %v: %v", rawProtoPath, err)
+		}
+		proto.Merge(&c, rawC)
+	}
+	if err := tgCfgUtil.Validate(c); err != nil {
+		return fmt.Errorf("could not merge supplied raw protos %v: %v", opt.rawProto, err)
 	}
 
 	// Print proto if requested
