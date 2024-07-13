@@ -26,6 +26,42 @@ postsubmits:
       testgrid-alert-email: kubernetes-sig-testing-alerts@googlegroups.com, k8s-infra-alerts@kubernetes.io
       testgrid-num-failures-to-alert: '1'
       description: Updates the html contents for go.k8s.io/triage.
+  - name: post-test-infra-upload-testgrid-config
+    cluster: k8s-infra-prow-build-trusted
+    branches:
+    - ^master$
+    max_concurrency: 1
+    run_if_changed: '^config/(jobs|testgrids)/.*$'
+    decorate: true
+    spec:
+      serviceAccountName: k8s-testgrid-config-updater
+      containers:
+      # TODO: Switch this to use the k8s-staging-infra-tools/k8s-infra image instead.
+      - image: gcr.io/k8s-prow/configurator:v20240513-a9bd71bf01
+        command:
+        - configurator
+        args:
+        - --yaml=config/testgrids
+        - --default=config/testgrids/default.yaml
+        - --prow-config=config/prow/config.yaml
+        - --prow-job-config=config/jobs/
+        - --output=gs://k8s-testgrid-canary/configs/k8s/config
+        - --output=gs://k8s-testgrid/configs/k8s/config
+        - --prowjob-url-prefix=https://git.k8s.io/test-infra/config/jobs/
+        - --update-description
+        - --oneshot
+        - --world-readable
+        resources:
+          requests:
+            memory: "1Gi"
+    annotations:
+      testgrid-dashboards: sig-testing-maintenance, sig-k8s-infra-prow
+      # TODO: Remove 'new-' once `post-test-infra-upload-testgrid-config` job is removed.
+      testgrid-tab-name: new-testgrid-config-update
+      testgrid-alert-email: kubernetes-sig-testing-alerts@googlegroups.com, k8s-infra-alerts@kubernetes.io
+      testgrid-num-failures-to-alert: '1'
+      description: Compiles and updates testgrid config on test-infra pushes
+
 
 periodics:
 - name: metrics-bigquery
