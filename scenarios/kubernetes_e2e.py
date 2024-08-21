@@ -337,7 +337,7 @@ def create_parser():
         help='Use prebuilt kubernetes binaries if set, optionally specifying strategy')
     parser.add_argument(
         '--gcs-shared',
-        default='gs://kubernetes-jenkins/shared-results/',
+        default='gs://kubernetes-ci-logs/shared-results/',
         help='Get shared build from this bucket')
     parser.add_argument(
         '--cluster', default='bootstrap-e2e', help='Name of the cluster')
