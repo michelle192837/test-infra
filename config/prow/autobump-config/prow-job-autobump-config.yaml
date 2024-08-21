@@ -3,7 +3,7 @@ gitHubLogin: "k8s-infra-ci-robot"
 gitHubToken: "/etc/github-token/token"
 gitName: "Kubernetes Prow Robot"
 gitEmail: "75457971+k8s-infra-ci-robot@users.noreply.github.com"
-onCallAddress: "https://storage.googleapis.com/kubernetes-jenkins/oncall.json"
+onCallAddress: "https://storage.googleapis.com/kubernetes-ci-logs/oncall.json"
 skipPullRequest: false
 gitHubOrg: "kubernetes"
 gitHubRepo: "test-infra"
