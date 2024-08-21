@@ -235,7 +235,7 @@ def load_sub(poll):
 
     Args:
         poll: Follow GCS changes from project/topic/subscription
-              Ex: kubernetes-jenkins/gcs-changes/kettle
+              Ex: kubernetes-ci-logs/gcs-changes/kettle
 
     Return:
         Subscribed client
